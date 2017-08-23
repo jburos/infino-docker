@@ -21,7 +21,7 @@ source activate immuneinf
 # install dependencies
 
 #wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi/model-single-origin-samples/biokepi/conda_requirements.txt
-https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi-update/model-single-origin-samples/biokepi/conda_requirements.txt
+wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi-update/model-single-origin-samples/biokepi/conda_requirements.txt
 # wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi/model-single-origin-samples/biokepi/pip_requirements.txt
 wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi-update/model-single-origin-samples/biokepi/pip_requirements.txt
 
