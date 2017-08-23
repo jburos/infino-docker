@@ -1,81 +1,56 @@
-pip_requirements.txt, conda_requirements.txt from biokepi folder
+This is a development environment for infino.
 
+# Install
 
-conda env with python3
+1. Clone the code into your home directory: `git clone git@github.com:hammerlab/immune-infiltrate-explorations.git`
+2. Set up a shared model cache that is world-readable: `sudo mkdir -p /data/modelcache_new && sudo chmod -R 777 /data/modelcache_new`
+3. Pull docker image: `docker pull hammerlab/infino-env:latest`
 
+# Use
 
-start on host:
-`git clone git@github.com:hammerlab/immune-infiltrate-explorations.git`
-mount that in.
+1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest`
+2. Navigate to that port that you have set up to forward -- you will see a jupyter notebook server.
+3. To commit code, use `git` from the host (as opposed to from inside the docker container).
 
-```
-export PATH="/home/maxim/miniconda3/bin:$PATH"
+This command mounts your personal code directory and the shared model cache, and acts as your user account for all editing purposes.
 
-conda create -n immuneinf python=3.5 matplotlib pandas seaborn numpy scipy jupyter
-# jacki says:
-# conda create -n immuneinf python=3 matplotlib pandas seaborn numpy scipy jupyter
+# More options available
 
+You can get a shell into the container in the following ways:
 
-source activate immuneinf 
+* `docker run -it --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest bash` (if you are starting a new container)
+* `docker exec -it [name your container here] bash` (shell into an existing container)
 
-# install dependencies
-
-#wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi/model-single-origin-samples/biokepi/conda_requirements.txt
-wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi-update/model-single-origin-samples/biokepi/conda_requirements.txt
-# wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi/model-single-origin-samples/biokepi/pip_requirements.txt
-wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/biokepi-update/model-single-origin-samples/biokepi/pip_requirements.txt
-
-conda install --file=conda_requirements.txt
-pip install -r pip_requirements.txt
-
-# set up dependencies
-pyensembl install --release 79 --species homo_sapiens
-
-# add kernel to jupyter nb
-python -m ipykernel install --user --name=immune3
-
-# install nbexecute binary
-pip install git+git://github.com/jburos/nbutils
-# now can run:
-# nbexecute --kernel-name=immune3 --timeout 900000 0.85*.ipynb
-
-# install jupyter nb extensions
-pip install jupyter_contrib_nbextensions
-jupyter contrib nbextension install --user
-
-
-
-# run 
-source activate immuneinf
-jupyter notebook --no-browser --NotebookApp.token=''
+Teardown:
 
 ```
+docker stop [name of your container here] # restart with "docker start"
+docker rm [name of your container here]
+```
+
+Mounted directories will be unaffected because they live on the host.
 
 
-also mount /data/output/* to model-single-origin-source/data/ on host.
+# How the image works
 
-modify cachedir in cache.py on host.
+This is derived from the Jupyter "data science notebook" image:
 
+* [Docker hub page](https://hub.docker.com/r/jupyter/datascience-notebook/)
+* [Dockerfile](https://github.com/jupyter/docker-stacks/blob/master/datascience-notebook/Dockerfile)
 
-install git config from host? or where will be committing to git from? probably from the host. so maybe don't do this.
+You can use any options from that image, e.g. you can grant sudo access by adding `-e GRANT_SUDO=yes`.
 
-TODO: make pyensembl a base image. actually that's tough because have special kernel. maybe pyensembl has a way to avoid the data download.
+Our image installs pip and conda requirements from the primary repository into a python3 environment. Here is how to get those if you want to update the image:
 
+```
+wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/master/model-single-origin-samples/biokepi/conda_requirements.txt
+wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/master/model-single-origin-samples/biokepi/pip_requirements.txt
+```
 
-NOTEBOOK_ARGS
+To build: `docker build -t hammerlab/infino_env:latest .`
 
-pip install some-package
-conda install some-package
+TODOs:
 
-docker run -it --rm -e GRANT_SUDO=yes -v /tmp/mycode:/home/jovyan/work -p 8888:8888 jupyter/datascience-notebook start-notebook.sh --NotebookApp.token=''
+* Fetch the requirements files during docker build.
+* the Dockerfile does not currently install pyensembl requirements (`pyensembl install --release 79 --species homo_sapiens`).
 
-docker run -it --rm --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) -v $(pwd)/work:/home/jovyan/work -p 58235:8888 jupyter/datascience-notebook start-notebook.sh --NotebookApp.token=''
-
-
-
-
-
-docker run -it --rm --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) -v $(pwd)/work:/home/jovyan/work -p 58235:8888 jupyter/datascience-notebook start-notebook.sh --NotebookApp.token=''
-
-
-# infino-env
