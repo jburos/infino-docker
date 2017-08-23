@@ -51,6 +51,6 @@ To build: `docker build -t hammerlab/infino_env:latest .`
 
 TODOs:
 
-* Fetch the requirements files during docker build.
-* the Dockerfile does not currently install pyensembl requirements (`pyensembl install --release 79 --species homo_sapiens`).
+* Fetch the requirements files during docker build. However caching will break.
+* the Dockerfile does not currently install pyensembl requirements (`pyensembl install --release 79 --species homo_sapiens`). We can run this manually for an existing container with `docker exec`. In the future we might want to build this into the image. But it's a time consuming step.
 
