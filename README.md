@@ -8,7 +8,7 @@ This is a development environment for infino.
 
 # Use
 
-1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -v /data/output_unpackaged:/data -v /data/microarray:/microarrays:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest`
+1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -v /data/output_unpackaged:/data:ro -v /data/microarray:/microarrays:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest`
 2. After around two minutes (initial startup), navigate to that port that you have set up to forward -- you will see a jupyter notebook server.
 3. To commit code, use `git` from the host (as opposed to from inside the docker container).
 
