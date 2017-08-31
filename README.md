@@ -8,7 +8,7 @@ This is a development environment for infino.
 
 # Use
 
-1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest`
+1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -v /data/output_unpackaged:/data -v /data/microarray:/microarrays:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest`
 2. After around two minutes (initial startup), navigate to that port that you have set up to forward -- you will see a jupyter notebook server.
 3. To commit code, use `git` from the host (as opposed to from inside the docker container).
 
@@ -50,9 +50,4 @@ wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/
 ```
 
 To build: `docker build -t hammerlab/infino_env:latest .`
-
-TODOs:
-
-* Fetch the requirements files during docker build. However caching will break.
-* the Dockerfile does not currently install pyensembl requirements (`pyensembl install --release 79 --species homo_sapiens`). We can run this manually for an existing container with `docker exec`. In the future we might want to build this into the image. But it's a time consuming step.
 

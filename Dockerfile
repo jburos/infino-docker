@@ -8,7 +8,7 @@ RUN conda install --file=/home/jovyan/conda_requirements.txt
 RUN pip install -r /home/jovyan/pip_requirements.txt
 
 # set up dependencies
-#RUN pyensembl install --release 79 --species homo_sapiens
+RUN pyensembl install --release 79 --species homo_sapiens
 RUN pip install git+git://github.com/jburos/nbutils
 RUN pip install jupyter_contrib_nbextensions
 RUN jupyter contrib nbextension install --user
