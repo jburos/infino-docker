@@ -8,11 +8,11 @@ This is a development environment for infino.
 
 # Use
 
-1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -v /data/output_unpackaged:/data:ro -v /data/microarray:/microarrays:ro -v /data/cibersort:/home/jovyan/cibersort:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino-docker:latest`
+1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/modelcache -v /data/output_unpackaged:/data:ro -v /data/microarray:/microarrays:ro -v /data/cibersort:/cibersort:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino-docker:latest`
 2. After around two minutes (initial startup), navigate to that port that you have set up to forward -- you will see a jupyter notebook server.
 3. To commit code, use `git` from the host (as opposed to from inside the docker container).
 
-This command mounts your personal code directory, the shared model cache, the shared RNA-seq and microarray data directories, and the global Cibersort install, and acts as your user account for all editing purposes.
+This command mounts your personal code directory, the shared model cache, the shared RNA-seq and microarray data directories, and the global Cibersort install, and acts as your user account for all editing purposes. (Note: anything mounted into `/home/jovyan` will have its ownership changed, which isn't possible in some situations, e.g. if readonly file system.)
 
 # More options available
 
