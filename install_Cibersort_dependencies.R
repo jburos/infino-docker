@@ -1,0 +1,6 @@
+install.packages('Rserve', repos="http://cran.rstudio.com/")
+install.packages('e1071', repos="http://cran.rstudio.com/")
+install.packages('parallel', repos="http://cran.rstudio.com/")
+install.packages('colorRamps', repos="http://cran.rstudio.com/")
+source("http://bioconductor.org/biocLite.R")
+biocLite("preprocessCore")
