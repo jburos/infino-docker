@@ -9,6 +9,8 @@ RUN conda install --file=/home/jovyan/conda_requirements.txt
 
 RUN pip install -r /home/jovyan/pip_requirements.txt
 
+USER root
+
 # set up jdk (to run cibersort)
 RUN apt-get update -y
 RUN apt-get install -y openjdk-8-jdk
@@ -21,6 +23,8 @@ RUN Rscript /home/jovyan/install_Cibersort_dependencies.R
 # Rserve need to install from source to run from command line
 # RUN wget -P /home/jovyan/ https://cran.r-project.org/src/contrib/Rserve_1.7-3.tar.gz
 # RUN R CMD INSTALL /home/jovyan/Rserve_1.7-3.tar.gz
+
+USER jovyan
 
 # set up dependencies
 RUN pyensembl install --release 79 --species homo_sapiens
