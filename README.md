@@ -4,11 +4,11 @@ This is a development environment for infino.
 
 1. Clone the code into your home directory: `git clone git@github.com:hammerlab/immune-infiltrate-explorations.git`
 2. Set up a shared model cache that is world-readable: `sudo mkdir -p /data/modelcache_new && sudo chmod -R 777 /data/modelcache_new`
-3. Pull docker image: `docker pull hammerlab/infino-env:latest`
+3. Pull docker image: `docker pull hammerlab/infino-docker:latest`
 
 # Use
 
-1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -v /data/output_unpackaged:/data:ro -v /data/microarray:/microarrays:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest`
+1. Run: `docker run -d --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -v /data/output_unpackaged:/data:ro -v /data/microarray:/microarrays:ro -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino-docker:latest`
 2. After around two minutes (initial startup), navigate to that port that you have set up to forward -- you will see a jupyter notebook server.
 3. To commit code, use `git` from the host (as opposed to from inside the docker container).
 
@@ -20,7 +20,7 @@ You can view logs with: `docker logs [name of your container here]`.
 
 You can get a shell into the container in the following ways:
 
-* `docker run -it --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino_env:latest bash` (if you are starting a new container)
+* `docker run -it --name [name your container here] -v $HOME/immune-infiltrate-explorations:/home/jovyan/work -v /data/modelcache_new:/home/jovyan/modelcache -p [put port that you have forwarded here]:8888 --user root -e NB_UID=$(id -u) -e NB_GID=$(id -g) hammerlab/infino-docker:latest bash` (if you are starting a new container)
 * `docker exec -it [name your container here] bash` (shell into an existing container)
 
 Teardown:
@@ -49,5 +49,5 @@ wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/
 wget https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/master/model-single-origin-samples/biokepi/pip_requirements.txt
 ```
 
-To build: `docker build -t hammerlab/infino_env:latest .`
+To build: `docker build -t hammerlab/infino-docker:latest .`
 
