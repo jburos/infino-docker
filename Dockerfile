@@ -7,6 +7,12 @@ RUN conda install --file=/home/jovyan/conda_requirements.txt
 
 RUN pip install -r /home/jovyan/pip_requirements.txt
 
+# set up jdk (to run cibersort)
+RUN apt-get update -y
+RUN apt-get install -y openjdk-8-jdk
+ENV JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64'
+RUN javac -version # validates that installed
+
 # set up dependencies
 RUN pyensembl install --release 79 --species homo_sapiens
 RUN pip install git+git://github.com/jburos/nbutils
