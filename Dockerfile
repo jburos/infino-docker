@@ -32,6 +32,12 @@ RUN pip install git+git://github.com/jburos/nbutils
 RUN pip install jupyter_contrib_nbextensions
 RUN jupyter contrib nbextension install --user
 
+# install cmdstan (run make with 4 cores)
+RUN wget https://github.com/stan-dev/cmdstan/releases/download/v2.16.0/cmdstan-2.16.0.tar.gz
+RUN tar -zxvf cmdstan-2.16.0.tar.gz
+RUN sh -c "cd /home/jovyan/cmdstan-2.16.0 && make build -j4"
+ENV PATH="/home/jovyan/cmdstan-2.16.0/bin:${PATH}"
+
 # below needed to fix cython behavior (for stan especially)
 # can test behavior with: python -c 'import sklearn.linear_model.tests.test_randomized_l1'
 # (https://github.com/BVLC/caffe/issues/3884)
