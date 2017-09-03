@@ -41,7 +41,8 @@ ENV PATH="/home/jovyan/cmdstan-2.16.0/bin:${PATH}"
 # below needed to fix cython behavior (for stan especially)
 # can test behavior with: python -c 'import sklearn.linear_model.tests.test_randomized_l1'
 # (https://github.com/BVLC/caffe/issues/3884)
-RUN conda install mkl
+RUN conda install --yes mkl mkl-service
+RUN python -c 'import sklearn.linear_model.tests.test_randomized_l1'
 
 EXPOSE 8888
 #CMD ["/bin/bash"]
