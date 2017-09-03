@@ -35,7 +35,7 @@ RUN jupyter contrib nbextension install --user
 # install cmdstan (run make with 4 cores)
 RUN wget https://github.com/stan-dev/cmdstan/releases/download/v2.16.0/cmdstan-2.16.0.tar.gz
 RUN tar -zxvf cmdstan-2.16.0.tar.gz
-RUN sh -c "cd /home/jovyan/cmdstan-2.16.0 && make build -j4"
+RUN make build -C /home/jovyan/cmdstan-2.16.0
 ENV PATH="/home/jovyan/cmdstan-2.16.0/bin:${PATH}"
 
 # below needed to fix cython behavior (for stan especially)
