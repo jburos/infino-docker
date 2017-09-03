@@ -32,6 +32,18 @@ RUN pip install git+git://github.com/jburos/nbutils
 RUN pip install jupyter_contrib_nbextensions
 RUN jupyter contrib nbextension install --user
 
+# enable useful nbextensions
+RUN jupyter nbextension enable code_prettify/code_prettify
+RUN jupyter nbextension enable collapsible_headings/main 
+RUN jupyter nbextension enable freeze/main
+RUN jupyter nbextension enable notify/notify
+RUN jupyter nbextension enable toc2/main
+RUN jupyter nbextension enable varInspector/main
+RUN jupyter nbextension enable execute_time/ExecuteTime
+RUN jupyter nbextension enable init_cell/main
+RUN jupyter nbextension enable table_beautifier/main
+RUN jupyter nbextension enable python-markdown/main
+
 # install cmdstan (run make with 4 cores)
 RUN wget https://github.com/stan-dev/cmdstan/releases/download/v2.16.0/cmdstan-2.16.0.tar.gz
 RUN tar -zxvf cmdstan-2.16.0.tar.gz
