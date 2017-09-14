@@ -1,7 +1,14 @@
 FROM jupyter/datascience-notebook:8f56e3c47fec
 
-COPY conda_requirements.txt /home/jovyan/conda_requirements.txt
-COPY pip_requirements.txt /home/jovyan/pip_requirements.txt
+USER root
+
+ADD https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/master/model-single-origin-samples/biokepi/conda_requirements.txt /home/jovyan/conda_requirements.txt
+ADD https://raw.githubusercontent.com/hammerlab/immune-infiltrate-explorations/master/model-single-origin-samples/biokepi/pip_requirements.txt /home/jovyan/pip_requirements.txt
+RUN chown jovyan:users /home/jovyan/conda_requirements.txt
+RUN chown jovyan:users /home/jovyan/pip_requirements.txt
+
+USER jovyan
+
 COPY install_Cibersort_dependencies.R /home/jovyan/install_Cibersort_dependencies.R
 COPY runRserve.R /home/jovyan/runRserve.R
 
