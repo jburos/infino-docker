@@ -43,6 +43,8 @@ RUN jupyter nbextension enable execute_time/ExecuteTime
 RUN jupyter nbextension enable init_cell/main
 RUN jupyter nbextension enable table_beautifier/main
 RUN jupyter nbextension enable python-markdown/main
+RUN pip install yapf
+# that's needed for the code prettify extension
 
 # install cmdstan (run make with 4 cores)
 RUN wget https://github.com/stan-dev/cmdstan/releases/download/v2.16.0/cmdstan-2.16.0.tar.gz
