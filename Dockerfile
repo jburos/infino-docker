@@ -31,6 +31,11 @@ RUN Rscript /home/jovyan/install_Cibersort_dependencies.R
 # RUN wget -P /home/jovyan/ https://cran.r-project.org/src/contrib/Rserve_1.7-3.tar.gz
 # RUN R CMD INSTALL /home/jovyan/Rserve_1.7-3.tar.gz
 
+# install imagemagick
+RUN apt-get install -y \
+    wget \
+    imagemagick 
+
 USER jovyan
 
 # set up dependencies
