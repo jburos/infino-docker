@@ -19,8 +19,8 @@ RUN pip install -r /home/jovyan/pip_requirements.txt
 USER root
 
 # set up jdk (to run cibersort)
-RUN apt-get update -y
-RUN apt-get install -y openjdk-8-jdk
+# https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run
+RUN apt-get update -y && apt-get install -y openjdk-8-jdk
 ENV JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64'
 RUN javac -version # validates that installed
 
@@ -32,7 +32,8 @@ RUN Rscript /home/jovyan/install_Cibersort_dependencies.R
 # RUN R CMD INSTALL /home/jovyan/Rserve_1.7-3.tar.gz
 
 # install imagemagick
-RUN apt-get install -y \
+# https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run
+RUN apt-get update && apt-get install -y \
     wget \
     imagemagick 
 
@@ -55,14 +56,25 @@ RUN jupyter nbextension enable execute_time/ExecuteTime
 RUN jupyter nbextension enable init_cell/main
 RUN jupyter nbextension enable table_beautifier/main
 RUN jupyter nbextension enable python-markdown/main
+
+# this next line is needed for the code prettify extension
 RUN pip install yapf
-# that's needed for the code prettify extension
+
+# disable auto running initialization cells when you load a notebook. so that reloads aren't annoying
+RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+RUN chmod +x jq-linux64
+RUN cp /home/jovyan/.jupyter/nbconfig/notebook.json /home/jovyan/notebook.json.bak
+RUN cat /home/jovyan/.jupyter/nbconfig/notebook.json | ./jq-linux64 '. + {"init_cell": {"run_on_kernel_ready": false}}' > /home/jovyan/.jupyter/nbconfig/notebook.json
 
 # install cmdstan (run make with 4 cores)
 RUN wget https://github.com/stan-dev/cmdstan/releases/download/v2.16.0/cmdstan-2.16.0.tar.gz
 RUN tar -zxvf cmdstan-2.16.0.tar.gz
-RUN make build -C /home/jovyan/cmdstan-2.16.0
-ENV PATH="/home/jovyan/cmdstan-2.16.0/bin:${PATH}"
+# sometimes the directory name is cmdstan-2.16.0; other times it's just cmdstan-.
+#RUN make build -C /home/jovyan/cmdstan-2.16.0
+# extract directory name: https://unix.stackexchange.com/a/246807/6448
+RUN mv "/home/jovyan/`tar -tzf cmdstan-2.16.0.tar.gz | head -1 | cut -f1 -d"/"`" "/home/jovyan/cmdstan"
+RUN make build -C /home/jovyan/cmdstan
+ENV PATH="/home/jovyan/cmdstan/bin:${PATH}"
 
 # below needed to fix cython behavior (for stan especially)
 # can test behavior with: python -c 'import sklearn.linear_model.tests.test_randomized_l1'
