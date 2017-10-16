@@ -64,7 +64,7 @@ RUN pip install yapf
 RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 RUN chmod +x jq-linux64
 RUN cp /home/jovyan/.jupyter/nbconfig/notebook.json /home/jovyan/notebook.json.bak
-RUN cat /home/jovyan/.jupyter/nbconfig/notebook.json | ./jq-linux64 '. + {"init_cell": {"run_on_kernel_ready": false}}' > /home/jovyan/.jupyter/nbconfig/notebook.json
+RUN cat /home/jovyan/notebook.json.bak | ./jq-linux64 '. + {"init_cell": {"run_on_kernel_ready": false}}' > /home/jovyan/.jupyter/nbconfig/notebook.json
 
 # install cmdstan (run make with 4 cores)
 RUN wget https://github.com/stan-dev/cmdstan/releases/download/v2.16.0/cmdstan-2.16.0.tar.gz
