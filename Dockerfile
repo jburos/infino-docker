@@ -35,7 +35,8 @@ RUN Rscript /home/jovyan/install_Cibersort_dependencies.R
 # https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run
 RUN apt-get update && apt-get install -y \
     wget \
-    imagemagick 
+    imagemagick \
+    parallel
 
 USER jovyan
 
