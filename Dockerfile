@@ -86,14 +86,18 @@ ENV PATH="/home/jovyan/cmdstan/bin:${PATH}"
 RUN conda install --yes mkl mkl-service
 RUN python -c 'import sklearn.linear_model.tests.test_randomized_l1'
 
+user root 
+
 # install igraph (dependency for R)
-apt-get update  && \
-  apt-get install -y tzdata && \
-  apt-get install software-properties-common && \
-  add-apt-repository -y "ppa:marutter/rrutter" && \
-  add-apt-repository -y "ppa:marutter/c2d4u" && \
-  apt-get update && \
-  apt-get install r-cran-igraph
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt-get update  && \
+  apt-get install -y software-properties-common && \
+  #add-apt-repository -y "ppa:marutter/rrutter" && \
+  #add-apt-repository -y "ppa:marutter/c2d4u" && \
+  #apt-get update && \
+  apt-get install --allow-unauthenticated -y r-cran-igraph
+
+user jovyan
 
 EXPOSE 8888
 #CMD ["/bin/bash"]
