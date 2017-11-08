@@ -36,7 +36,10 @@ RUN Rscript /home/jovyan/install_Cibersort_dependencies.R
 RUN apt-get update && apt-get install -y \
     wget \
     imagemagick \
-    parallel
+    parallel \
+    tzdata
+
+# need tzdata for timezone data folder /usr/share/zoneinfo to be populated. required to have R parse datetimes in csvs properly. confirm installed by running `str(OlsonNames())` in R -- should not be empty
 
 USER jovyan
 
