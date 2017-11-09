@@ -89,15 +89,20 @@ RUN python -c 'import sklearn.linear_model.tests.test_randomized_l1'
 user root 
 
 # install igraph (dependency for R)
-RUN DEBIAN_FRONTEND=noninteractive \
-  apt-get update  && \
-  apt-get install -y software-properties-common && \
-  #add-apt-repository -y "ppa:marutter/rrutter" && \
-  #add-apt-repository -y "ppa:marutter/c2d4u" && \
-  #apt-get update && \
-  apt-get install --allow-unauthenticated -y r-cran-igraph
+RUN apt-get update  && \
+  apt-get install -y \ 
+      libxml2 \
+      libxml2-dev \
+      zlib1g-dev
+
+# fix silly bug in devtools
+RUN ln -s /bin/tar /bin/gtar
 
 user jovyan
+
+RUN Rscript -e "devtools::install_github('BioinformaticsFMRP/TCGAbiolinks')" && \
+    Rscript -e "install.packages('reticulate'); install.packages('corrplot')" && \
+    Rscript -e "devtools::install_github('jburos/reticulatedf')"
 
 EXPOSE 8888
 #CMD ["/bin/bash"]
